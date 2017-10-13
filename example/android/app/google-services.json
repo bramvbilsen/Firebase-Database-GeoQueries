@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "193220400218",
+    "firebase_url": "https://flutter-firebase-geolocation.firebaseio.com",
+    "project_id": "flutter-firebase-geolocation",
+    "storage_bucket": "flutter-firebase-geolocation.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:193220400218:android:2ff6fc02988fa51c",
+        "android_client_info": {
+          "package_name": "com.vanbilsen.bram.firebase.database.geolocation.flutterfirebasedatabasegeolocationexample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "193220400218-vdun22i1burnjoc54k3ql012kaarii8g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vanbilsen.bram.firebase.database.geolocation.flutterfirebasedatabasegeolocationexample",
+            "certificate_hash": "f134b4e48699c878fb3654d0283731491d0fb78f"
+          }
+        },
+        {
+          "client_id": "193220400218-rrca9u74ces5k1kvlmdd4a1rul12rdbs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwDdE0r_Vn4rOLVOGLk-N-iUPOjUYx89U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "193220400218-rrca9u74ces5k1kvlmdd4a1rul12rdbs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
