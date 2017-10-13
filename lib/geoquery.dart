@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'dart:collection';
+import 'dart:async';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'geoqueryeventlistener.dart';
@@ -11,20 +13,22 @@ class GeoQuery {
   DatabaseReference _dbRef;
   List<double> _center;
   double _radius;
-  String path;
-	String geoHash;
+  String _path;
+	String _geoHash;
 
-	Set<Query> queries = new Set();
+	HashSet<StreamSubscription> subscriptions = new HashSet();
   
   GeoQuery(String path, List<double> center, double radius) {
 		this._center = center;
 		this._radius = radius;
-		this.geoHash = Geohash.encode(center[0], center[1]);
+		this._geoHash = Geohash.encode(center[0], center[1]);
+		this._path = path;
     _dbRef = FirebaseDatabase.instance.reference().child(path);
   }
 
   List<double> get center => _center;
   double get radius => _radius;
+  String get path => _path;
 
   void addGeoQueryEventListener(GeoQueryEventListener listener) {
 
@@ -32,13 +36,13 @@ class GeoQuery {
 		List neighbors;
 
 		if (radius <= 0.6) { // Geohash precision ~6
-			newPrecisionHash = geoHash.substring(0, 5);
+			newPrecisionHash = _geoHash.substring(0, 5);
 		} else if (radius <= 2.5) { // Geohash precision ~5
-			newPrecisionHash = geoHash.substring(0, 4);
+			newPrecisionHash = _geoHash.substring(0, 4);
 		} else if (radius <= 20) { // Geohash precision ~4
-			newPrecisionHash = geoHash.substring(0, 3);
+			newPrecisionHash = _geoHash.substring(0, 3);
 		} else if (radius <= 78) { // Geohash precision ~3
-			newPrecisionHash = geoHash.substring(0, 2);
+			newPrecisionHash = _geoHash.substring(0, 2);
 		}
 
 		neighbors = [
@@ -57,20 +61,20 @@ class GeoQuery {
 			Query query = _dbRef.orderByChild("hash")
 						.startAt(hashToUse)
 						.endAt(hashToUse + "\uf8ff");
-			query.onChildAdded.listen((Event e) {
+			subscriptions.add(query.onChildAdded.listen((Event e) {
 				List<double> loc = e.snapshot.value["loc"];
 				if (_distance(center[0], center[1], loc[0], loc[1], "K") <= radius) {
 					listener.onKeyEntered(e.snapshot.key, loc);
 				}
-			});
-			query.onChildRemoved.listen((Event e) {
+			}));
+			subscriptions.add(query.onChildRemoved.listen((Event e) {
 				List<double> loc = e.snapshot.value["loc"];
 				print(loc);
 				if (_distance(center[0], center[1], loc[0], loc[1], "K") <= radius) {
 					listener.onKeyExited(e.snapshot.key);
 				}
-			});
-			query.onChildChanged.listen((Event e) {
+			}));
+			subscriptions.add(query.onChildChanged.listen((Event e) {
 				List<double> loc = e.snapshot.value["loc"];
 				print(loc);
 				if (e.snapshot.value["hash"].toString().startsWith(hashToUse)) {
@@ -80,11 +84,17 @@ class GeoQuery {
 				} else {
 					listener.onKeyExited(e.snapshot.key);
 				}
-			});
-			queries.add(query);
+			}));
 		}
 
   }
+
+  void removeGeoQueryEventListener() {
+  	subscriptions.forEach((StreamSubscription sub) {
+  		sub.cancel();
+		});
+  	subscriptions.clear();
+	}
 
 	double _distance(double lat1, double lon1, double lat2, double lon2, String unit) {
 		double theta = lon1 - lon2;

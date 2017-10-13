@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:math';
+import 'dart:collection';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:geohash/geohash.dart';
 
@@ -11,6 +11,7 @@ class FirebaseGeoLocation {
     DatabaseReference _dbRef;
     String _path;
     GeoQuery query;
+    HashSet<GeoQuery> queries = new HashSet();
 
     FirebaseGeoLocation(this._path) {
         _dbRef = FirebaseDatabase.instance.reference().child(path);
@@ -44,7 +45,15 @@ class FirebaseGeoLocation {
 
     GeoQuery addGeoQuery(List<double> center, double radius) {
         GeoQuery query = new GeoQuery(_path, center, radius);
+        queries.add(query);
         return query;
+    }
+
+    void removeGeoQuery(GeoQuery query) {
+        if (!queries.contains(query))
+            throw new ArgumentError("The query you are trying to delete is not attached to this object!");
+        query.removeGeoQueryEventListener();
+        queries.remove(query);
     }
     
 }

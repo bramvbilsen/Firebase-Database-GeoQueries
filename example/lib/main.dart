@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_firebase_database_geolocation/geolocation.dart';
 import 'package:flutter_firebase_database_geolocation/geoquery.dart';
 import 'package:flutter_firebase_database_geolocation/geoqueryeventlistener.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 void main() {
   runApp(new MaterialApp(
@@ -31,6 +30,14 @@ class HomeState extends State<Home> {
             child: new Text("Set location"),
             onPressed: () {
               geoLocation.setLocation("Lidl", [50.888495, 4.700948]).then((Null res) => print("success"));
+            },
+          ),
+          new RaisedButton(
+            child: new Text("Remove location"),
+            onPressed: () {
+              geoLocation.removeLocation("Lidl").then((Null result) {
+                print("Location removed");
+              });
             },
           ),
           new RaisedButton(
@@ -78,6 +85,12 @@ class HomeState extends State<Home> {
 
                 }
               ));
+            },
+          ),
+          new RaisedButton(
+            child: new Text("Remove query"),
+            onPressed: () {
+              geoLocation.removeGeoQuery(query);
             },
           ),
         ],
