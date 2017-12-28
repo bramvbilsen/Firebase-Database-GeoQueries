@@ -4,7 +4,7 @@ description: Demonstrates how to use the flutter_firebase_database_geolocation p
 dependencies:
   flutter:
     sdk: flutter
-  firebase_database: "^0.1.0"
+  firebase_database: ^0.3.0
 
 dev_dependencies:
   flutter_test:

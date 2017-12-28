@@ -12,5 +12,5 @@ flutter:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_database: "^0.1.0"
-  geohash: "^0.1.1"
+  firebase_database: ^0.3.0
+  geohash: ^0.1.1

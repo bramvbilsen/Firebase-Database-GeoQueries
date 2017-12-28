@@ -50,9 +50,9 @@ class HomeState extends State<Home> {
             },
           ),
           new RaisedButton(
-            child: new Text("Create GeoQuery for Kot with 5KM radius"),
+            child: new Text("Create GeoQuery for Kot with 50KM radius"),
             onPressed: () {
-              query = geoLocation.addGeoQuery([50.888161, 4.704021], 5.0);
+              query = geoLocation.addGeoQuery([50.888161, 4.704021], 50.0);
             },
           ),
           new RaisedButton(
