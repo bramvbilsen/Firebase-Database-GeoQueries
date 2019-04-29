@@ -67,20 +67,20 @@ class GeoQuery {
           .startAt(hashToUse)
           .endAt(hashToUse + "\uf8ff");
       subscriptions.add(query.onChildAdded.listen((Event e) {
-        List<double> loc = e.snapshot.value["loc"];
+        List<double> loc = [e.snapshot.value["loc"][0] as double, e.snapshot.value["loc"][1] as double] as List<double>;
         if (_distance(center[0], center[1], loc[0], loc[1], "K") <= radius) {
           listener.onKeyEntered(e.snapshot.key, loc);
         }
       }));
       subscriptions.add(query.onChildRemoved.listen((Event e) {
-        List<double> loc = e.snapshot.value["loc"];
+        List<double> loc = [e.snapshot.value["loc"][0] as double, e.snapshot.value["loc"][1] as double] as List<double>;
         print(loc);
         if (_distance(center[0], center[1], loc[0], loc[1], "K") <= radius) {
           listener.onKeyExited(e.snapshot.key);
         }
       }));
       subscriptions.add(query.onChildChanged.listen((Event e) {
-        List<double> loc = e.snapshot.value["loc"];
+        List<double> loc = [e.snapshot.value["loc"][0] as double, e.snapshot.value["loc"][1] as double] as List<double>;
         print(loc);
         if (e.snapshot.value["hash"].toString().startsWith(hashToUse)) {
           if (_distance(center[0], center[1], loc[0], loc[1], "K") <= radius) {
