@@ -14,3 +14,7 @@ dependencies:
     sdk: flutter
   firebase_database: ^0.3.0
   geohash: ^0.1.1
+
+environment:
+  # Works in Dart 1 (starting with 1.20.1), and works in Dart 2.
+  sdk: '>=1.20.1 <3.0.0'
